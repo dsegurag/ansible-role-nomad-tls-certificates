@@ -1,0 +1,24 @@
+---
+- name: create a self signed certificate authority
+  ansible.builtin.command: nomad tls ca create
+  args:
+    chdir: "{{ nomad_tls_certificates_directory }}"
+    creates: nomad-agent-ca-key.pem
+
+- name: generate server certificate
+  ansible.builtin.command: nomad tls cert create -server
+  args:
+    chdir: "{{ nomad_tls_certificates_directory }}"
+    creates: global-server-nomad-key.pem
+
+- name: generate client certificate
+  ansible.builtin.command: nomad tls cert create -client
+  args:
+    chdir: "{{ nomad_tls_certificates_directory }}"
+    creates: global-client-nomad-key.pem
+
+- name: generate cli certificate
+  ansible.builtin.command: nomad tls cert create -cli
+  args:
+    chdir: "{{ nomad_tls_certificates_directory }}"
+    creates: global-cli-nomad-key.pem
